@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #	$OpenBSD: error.pl,v 1.1.1.1 2013/01/03 17:36:39 bluhm Exp $
 
-# Copyright (c) 2010-2013 Alexander Bluhm <bluhm@openbsd.org>
+# Copyright (c) 2010-2014 Alexander Bluhm <bluhm@openbsd.org>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
