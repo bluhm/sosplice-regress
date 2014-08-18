@@ -59,7 +59,7 @@ sub run {
 	my $self = shift;
 
 	defined(my $pid = fork())
-	    or die ref($self), " fork child failed";
+	    or die ref($self), " fork child failed: $!";
 	if ($pid) {
 		$CHILDREN{$pid} = 1;
 		$self->{pid} = $pid;
