@@ -12,11 +12,11 @@ our %args = (
 	sndbuf => 20000,
     },
     relay => {
-	rcvbuf => 20000,
+	rcvbuf => 30000,
 	sndbuf => 20000,
     },
     server => {
-	rcvbuf => 20000,
+	rcvbuf => 30000,
     },
     len => sum(@lengths),
     lengths => "@lengths",
