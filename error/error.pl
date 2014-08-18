@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#	$OpenBSD: error.pl,v 1.1.1.1 2013/01/03 17:36:39 bluhm Exp $
+#	$OpenBSD: error.pl,v 1.2 2014/08/18 22:58:19 bluhm Exp $
 
 # Copyright (c) 2010-2014 Alexander Bluhm <bluhm@openbsd.org>
 #
