@@ -205,6 +205,7 @@ sub relay_copy_stream {
 		}
 		my $read = sysread(STDIN, $buf,
 		    $max && $max < $size ? $max : $size);
+		next if !defined($read) && $!{EAGAIN};
 		defined($read)
 		    or die ref($self), " sysread at $len failed: $!";
 		if ($read == 0) {
