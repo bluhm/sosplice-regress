@@ -43,12 +43,12 @@ usage:
 EOF
 }
 
-my $test;
+my $testfile;
 our %args;
 if (@ARGV and -f $ARGV[-1]) {
-	$test = pop;
-	do $test
-	    or die "Do test file $test failed: ", $@ || $!;
+	$testfile = pop;
+	do $testfile
+	    or die "Do test file $testfile failed: ", $@ || $!;
 }
 my $mode =
 	@ARGV == 3 && $ARGV[0] =~ /^\d+$/ && $ARGV[2] =~ /^\d+$/ ? "manual" :
@@ -100,7 +100,7 @@ if ($mode eq "auto") {
 	$r = Remote->new(
 	    forward		=> $ARGV[0],
 	    logfile		=> "relay.log",
-	    testfile		=> $test,
+	    testfile		=> $testfile,
 	    %{$args{relay}},
 	    remotessh		=> $ARGV[3],
 	    listenaddr		=> $ARGV[2],

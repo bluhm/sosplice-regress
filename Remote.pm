@@ -62,15 +62,15 @@ sub child {
 	print STDERR $self->{up}, "\n";
 	my @opts = split(' ', $ENV{SSH_OPTIONS}) if $ENV{SSH_OPTIONS};
 	my $dir = dirname($0);
-	$dir = getcwd() if ! $dir || $dir eq '.';
-	my @cmd = ('ssh', '-n', @opts, $self->{remotessh}, 'perl',
-	    '-I', "$dir/..", "$dir/".basename($0), $self->{forward},
+	$dir = getcwd() if ! $dir || $dir eq ".";
+	my @cmd = ("ssh", "-n", @opts, $self->{remotessh}, "perl",
+	    "-I", "$dir/..", "$dir/".basename($0), $self->{forward},
 	    $self->{listenaddr}, $self->{connectaddr}, $self->{connectport},
 	    ($self->{testfile} ? "$dir/".basename($self->{testfile}) :
 	    ()));
 	print STDERR "execute: @cmd\n";
 	exec @cmd;
-	die "Exec @cmd failed: $!";
+	die "Exec '@cmd' failed: $!";
 }
 
 1;

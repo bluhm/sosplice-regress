@@ -30,9 +30,9 @@ my($remotessh, $testfile) = @ARGV;
 
 my @opts = split(' ', $ENV{SSH_OPTIONS}) if $ENV{SSH_OPTIONS};
 my $dir = dirname($0);
-$dir = getcwd() if ! $dir || $dir eq '.';
-my @cmd = ('ssh', '-n', @opts, $remotessh, 'perl',
-    '-I', "$dir/..", "$dir/error.pl", "$dir/".basename($testfile));
+$dir = getcwd() if ! $dir || $dir eq ".";
+my @cmd = ("ssh", "-n", @opts, $remotessh, "perl",
+    "-I", "$dir/..", "$dir/error.pl", "$dir/".basename($testfile));
 #print STDERR "execute: @cmd\n";
 exec @cmd;
-die "Exec @cmd failed: $!";
+die "Exec '@cmd' failed: $!";

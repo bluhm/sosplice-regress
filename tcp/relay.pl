@@ -29,12 +29,12 @@ sub usage {
 	die "usage: relay.pl copy|splice [test-args.pl]\n";
 }
 
-my $test;
+my $testfile;
 our %args;
 if (@ARGV and -f $ARGV[-1]) {
-	$test = pop;
-	do $test
-	    or die "Do test file $test failed: ", $@ || $!;
+	$testfile = pop;
+	do $testfile
+	    or die "Do test file $testfile failed: ", $@ || $!;
 }
 @ARGV == 1 or usage();
 
