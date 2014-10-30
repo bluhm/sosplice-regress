@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.4 2014/07/11 20:41:20 bluhm Exp $
+#	$OpenBSD: Makefile,v 1.5 2014/10/30 20:41:02 bluhm Exp $
 
 PROG ?=		relay
 CFLAGS +=	-Wall -Werror
