@@ -66,8 +66,7 @@ sub child {
 	my @cmd = ("ssh", "-n", @opts, $self->{remotessh}, "perl",
 	    "-I", "$dir/..", "$dir/".basename($0), $self->{forward},
 	    $self->{listenaddr}, $self->{connectaddr}, $self->{connectport},
-	    ($self->{testfile} ? "$dir/".basename($self->{testfile}) :
-	    ()));
+	    ($self->{testfile} ? "$dir/".basename($self->{testfile}) : ()));
 	print STDERR "execute: @cmd\n";
 	exec @cmd;
 	die ref($self), " exec '@cmd' failed: $!";
