@@ -11,13 +11,13 @@ our %args = (
 	my $s = IO::Socket::INET->new(
 	    Proto => "udp",
 	    LocalAddr => "127.0.0.1",
-	) or die "bind socket failed: $!";
+	) or die "socket bind failed: $!";
 
 	my $ss = IO::Socket::INET->new(
 	    Proto => "udp",
 	    PeerAddr => $s->sockhost(),
 	    PeerPort => $s->sockport(),
-	) or die "connect socket failed: $!";
+	) or die "socket connect failed: $!";
 
 	$s->setsockopt(SOL_SOCKET, SO_SPLICE, pack('i', $ss->fileno()))
 	    or die "splice failed: $!";
