@@ -16,6 +16,11 @@ CLEANFILES +=	copy splice
 copy splice: ${PROG}
 	ln -s relay $@
 
+.if ! empty (REMOTE_SSH)
+.BEGIN:
+	ssh ${REMOTE_SSH} 'cd ${.CURDIR} && make copy splice'
+.endif
+
 .for p in tcp udp
 .for r in copy splice
 
