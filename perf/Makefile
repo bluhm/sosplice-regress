@@ -28,11 +28,11 @@ run-regress-$p-$r: $r remote-setup
 	@echo '\n======== $@ ========'
 	-pkill -x tcpbench
 .if empty (REMOTE_SSH)
-	./$r ${p:S/tcp//:S/udp/-u/} 12345 localhost 12346 & \
+	./$r ${p:S/tcp//:S/udp/-u/} -4 12345 127.0.0.1 12346 & \
 	rpid=$$! ; \
-	tcpbench ${p:S/tcp//:S/udp/-u/} -t 7 -s -p 12346 & \
+	tcpbench ${p:S/tcp//:S/udp/-u/} -4 -t 7 -s -p 12346 & \
 	sleep 1 ; \
-	tcpbench ${p:S/tcp//:S/udp/-u/} -t 5 localhost ; \
+	tcpbench ${p:S/tcp//:S/udp/-u/} -4 -t 5 127.0.0.1 ; \
 	kill $$rpid ; \
 	pkill -x tcpbench
 .else
