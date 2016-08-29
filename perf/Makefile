@@ -16,15 +16,15 @@ CLEANFILES +=	copy splice
 copy splice: ${PROG}
 	ln -s relay $@
 
+remote-setup:
 .if ! empty (REMOTE_SSH)
-.BEGIN:
 	ssh ${REMOTE_SSH} 'cd ${.CURDIR} && make copy splice'
 .endif
 
 .for p in tcp udp
 .for r in copy splice
 
-run-regress-$p-$r: $r
+run-regress-$p-$r: $r remote-setup
 	@echo '\n======== $@ ========'
 	-pkill -x tcpbench
 .if empty (REMOTE_SSH)
