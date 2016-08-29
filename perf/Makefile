@@ -49,7 +49,7 @@ remote-regress-$p-$r: $r
 	-pkill -x $r
 	./$r ${p:S/tcp//:S/udp/-u/} -b ${REMOTE_ADDR} 12345 ${LOCAL_ADDR} 12346 & \
 	rpid=$$! ; \
-	sleep 7 ; \
+	sleep 10 ; \
 	kill $$rpid
 
 .endfor
