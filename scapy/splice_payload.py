@@ -68,7 +68,7 @@ time.sleep(1)
 
 print "Send 10 bytes payload"
 payload=TCP(sport=synack.dport, dport=synack.sport,
-    seq=1, ack=synack.seq+1,  flags='A')/"0123456789"
+    seq=1, ack=synack.seq+1,  flags='AP')/"0123456789"
 payload_ack=sr1(ip/payload, iface=LOCAL_IF)
 
 if payload_ack is None:
