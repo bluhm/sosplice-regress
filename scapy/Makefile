@@ -83,20 +83,20 @@ addr.py: Makefile
 SCAPYS !=		cd ${.CURDIR} && ls *.py
 TARGETS =		${SCAPYS}
 
-# XXX start splicing relay on other side
-
 # Set variables so that make runs with and without obj directory.
 # Only do that if necessary to keep visible output short.
 .if ${.CURDIR} == ${.OBJDIR}
-PYTHON =	python2.7 -u ./
+PYTHON =	python2.7 -u
+SCAPYPATH =
 .else
-PYTHON =	PYTHONPATH=${.OBJDIR} python2.7 -u ${.CURDIR}/
+PYTHON =	PYTHONPATH=${.OBJDIR} python2.7 -u
+SCAPYPATH =	${.CURDIR}/
 .endif
 
 .for s in ${SCAPYS}
 run-regress-$s: $s addr.py
 	@echo '\n======== $@ ========'
-	time ${SUDO} ${PYTHON}$s 54321 12345
+	time SUDO=${SUDO} PYTHON="${PYTHON}" perl ${PERLINC} ${PERLPATH}scapy.pl 54321 ${REMOTE_ADDR} 12345 ${SCAPYPATH}$s
 .endfor
 
 CLEANFILES +=		addr.py *.pyc *.log stamp-*

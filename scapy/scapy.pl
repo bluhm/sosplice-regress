@@ -20,7 +20,6 @@ use warnings;
 use File::Basename;
 use File::Copy;
 use Socket;
-use Socket6;
 
 use Relay;
 use Remote;
@@ -44,7 +43,7 @@ EOF
 my $testfile;
 if (@ARGV and -f $ARGV[-1]) {
 	$testfile = pop;
-        $testfile =~ /^scapy-.*\.py$/
+        basename($testfile) =~ /^scapy-.*\.py$/
             or die "Test file $testfile does not look like scapy script.\n";
 }
 my $mode =
@@ -56,9 +55,6 @@ if (!$testfile and $mode =~ /manual|auto/) {
 	usage();
 }
 
-my $s = {
-    listenport => $$ | 0xffff,
-};
 my $r;
 if ($mode eq "relay") {
 	$r = Relay->new(
@@ -89,6 +85,12 @@ if ($mode eq "relay") {
 
 	exit;
 }
+
+my $s = {
+    listendomain        => AF_INET,
+    listenaddr          => ($mode eq "auto" ? $ARGV[1] : undef),
+    listenport          => ($mode eq "manual" ? $ARGV[0] : undef),
+};
 if ($mode eq "auto") {
 	$r = Remote->new(
 	    forward		=> $ARGV[0],
@@ -101,4 +103,16 @@ if ($mode eq "auto") {
 	);
 	$r->run->up;
 }
+my $c = {
+    connectdomain       => AF_INET,
+    connectaddr         => ($mode eq "manual" ? $ARGV[1] : $r->{listenaddr}),
+    connectport         => ($mode eq "manual" ? $ARGV[2] : $r->{listenport}),
+};
+
+my @sudo = $ENV{SUDO} ? $ENV{SUDO} : ();
+my @python = $ENV{PYTHON} ? split(' ', $ENV{PYTHON}) : ("python2.7");
+my @cmd = (@sudo, @python, $testfile, $s->{listenport}, $c->{connectport});
+system("@cmd")
+    and die "Scapy script '@cmd' failed: $?";
+
 $r->down if $r;
