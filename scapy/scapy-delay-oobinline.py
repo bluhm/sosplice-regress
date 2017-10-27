@@ -97,6 +97,25 @@ if spliced_payload.urgptr != 11:
 	    (11, spliced_payload.urgptr)
 	exit(1)
 
+print "Retransmit spliced SYN+ACK packet to trigger ACK"
+spliced_ack_retrans=sr1(ip/spliced_synack, iface=LOCAL_IF)
+
+if spliced_ack_retrans is None:
+	print "ERROR: No spliced ACK retransmit packet received"
+	exit(1)
+if spliced_ack_retrans.seq != spliced_syn.seq+1+len(data):
+        print "ERROR: Expected seq %d, got %d in retransmitted spliced ack" % \
+            (spliced_syn.seq+1+len(data), spliced_ack_retrans.seq) 
+        exit(1)
+if spliced_ack_retrans.ack != 1:
+        print "ERROR: Expected ack %d, got %d in retransmitted spliced ack" % \
+            (1, spliced_ack_retrans.ack)
+        exit(1)
+if spliced_ack_retrans.len-20-20 != 0:
+        print "ERROR: Expected len %d, got %d in retransmitted spliced ack" % \
+            (0, spliced_ack_retrans.len-20-20)
+        exit(1)
+
 print "Kill connections with RST"
 spliced_rst=TCP(sport=spliced_ack.dport, dport=spliced_ack.sport,
     seq=1, ack=spliced_ack.seq, flags='RA')
