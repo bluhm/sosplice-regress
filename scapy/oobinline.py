@@ -1,5 +1,5 @@
 #!/usr/local/bin/python2.7
-# after tcp handshake send data from client via relay to server
+# after tcp handshake send urgent data from client via relay to server
 
 import os
 import threading
@@ -66,10 +66,10 @@ sniffer.filter = "src %s and dst %s and tcp port %u " \
 sniffer.start()
 time.sleep(1)
 
-print "Send 10 bytes payload"
-data="0123456789"
-payload=TCP(sport=synack.dport, dport=synack.sport,
-    seq=1, ack=synack.seq+1,  flags='AP')/data
+print "Send 20 bytes payload and one urgent byte"
+data="0123456789Xabcdefghij"
+payload=TCP(sport=synack.dport, dport=synack.sport, urgptr=11,
+    seq=1, ack=synack.seq+1,  flags='APU')/data
 payload_ack=sr1(ip/payload, iface=LOCAL_IF)
 
 if payload_ack is None:
@@ -90,10 +90,12 @@ if spliced_payload.seq != spliced_ack.seq:
 	print "ERROR: Expected seq %d, got %d in spliced payload" % \
 	    (spliced_ack.seq, spliced_payload.seq)
 	exit(1)
-if spliced_payload.len-20-20 != len(data):
-	print "ERROR: Expected len %d, got %d in spliced payload" % \
-	    (len(data), spliced_payload.len-20-20)
-	exit(1)
+# XXX run relay with oobinline
+#if spliced_payload.len-20-20 != len(data):
+#	print "ERROR: Expected len %d, got %d in spliced payload" % \
+#	    (len(data), spliced_payload.len-20-20)
+#	exit(1)
+# XXX check urgent pointer
 
 print "Kill connections with RST"
 spliced_rst=TCP(sport=spliced_ack.dport, dport=spliced_ack.sport,
