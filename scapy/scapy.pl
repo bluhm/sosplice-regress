@@ -67,6 +67,7 @@ if ($mode eq "relay") {
 	    connectaddr		=> $ARGV[2],
 	    connectport		=> $ARGV[3],
 	    func		=> sub { errignore(@_); relay(@_); },
+	    oobinline		=> 1,
 	    rcvbuf		=> 2**12,
 	    sndbuf		=> 2**12,
 	    down		=> "Broken pipe|Connection reset by peer",
