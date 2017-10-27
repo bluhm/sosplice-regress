@@ -96,7 +96,8 @@ SCAPYPATH =	${.CURDIR}/
 .for s in ${SCAPYS}
 run-regress-$s: $s addr.py
 	@echo '\n======== $@ ========'
-	time SUDO=${SUDO} PYTHON="${PYTHON}" perl ${PERLINC} ${PERLPATH}scapy.pl 54321 ${REMOTE_ADDR} 12345 ${SCAPYPATH}$s
+	time SUDO=${SUDO} PYTHON="${PYTHON}" perl ${PERLINC} ${PERLPATH}scapy.pl copy ${FAKE_NET_ADDR} ${REMOTE_ADDR} ${REMOTE_SSH} ${SCAPYPATH}$s
+	time SUDO=${SUDO} PYTHON="${PYTHON}" perl ${PERLINC} ${PERLPATH}scapy.pl splice ${FAKE_NET_ADDR} ${REMOTE_ADDR} ${REMOTE_SSH} ${SCAPYPATH}$s
 .endfor
 
 CLEANFILES +=		addr.py *.pyc *.log stamp-*

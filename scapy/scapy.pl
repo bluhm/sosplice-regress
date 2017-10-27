@@ -66,6 +66,10 @@ if ($mode eq "relay") {
 	    connectdomain	=> AF_INET,
 	    connectaddr		=> $ARGV[2],
 	    connectport		=> $ARGV[3],
+	    func		=> sub { errignore(@_); relay(@_); },
+	    rcvbuf		=> 2**12,
+	    sndbuf		=> 2**12,
+	    down		=> "Broken pipe|Connection reset by peer",
 	);
 	open(my $log, '<', $r->{logfile})
 	    or die "Remote log file open failed: $!";
@@ -89,7 +93,7 @@ if ($mode eq "relay") {
 my $s = {
     listendomain        => AF_INET,
     listenaddr          => ($mode eq "auto" ? $ARGV[1] : undef),
-    listenport          => ($mode eq "manual" ? $ARGV[0] : undef),
+    listenport          => ($mode eq "manual" ? $ARGV[0] : $$ & 0xffff),
 };
 if ($mode eq "auto") {
 	$r = Remote->new(
@@ -100,6 +104,7 @@ if ($mode eq "auto") {
 	    listenaddr		=> $ARGV[2],
 	    connectaddr		=> $ARGV[1],
 	    connectport		=> $s->{listenport},
+	    down		=> "Broken pipe|Connection reset by peer",
 	);
 	$r->run->up;
 }
