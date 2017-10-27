@@ -23,6 +23,12 @@ regress:
 	@echo SKIPPED
 .endif
 
+.if ! empty (PERL_REQUIRE)
+regress:
+        @echo "${PERL_REQUIRE}"
+        @echo install these perl packages for additional tests
+.endif
+
 # This test needs a manual setup of two machines
 # Set up machines: LOCAL REMOTE
 # LOCAL is the machine where this makefile is running.
