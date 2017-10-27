@@ -4,6 +4,7 @@ SUBDIR =
 SUBDIR +=	error
 SUBDIR +=	tcp
 SUBDIR +=	udp
+SUBDIR +=	scapy
 SUBDIR +=	perf
 
 .include <bsd.subdir.mk>
