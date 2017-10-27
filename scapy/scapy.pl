@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#	$OpenBSD$
+#	$OpenBSD: scapy.pl,v 1.1 2017/10/27 16:59:14 bluhm Exp $
 
 # Copyright (c) 2010-2017 Alexander Bluhm <bluhm@openbsd.org>
 #
@@ -43,8 +43,8 @@ EOF
 my $testfile;
 if (@ARGV and -f $ARGV[-1]) {
 	$testfile = pop;
-        basename($testfile) =~ /^scapy-.*\.py$/
-            or die "Test file $testfile does not look like scapy script.\n";
+	basename($testfile) =~ /^scapy-.*\.py$/
+	    or die "Test file $testfile does not look like scapy script.\n";
 }
 my $mode =
 	@ARGV == 3 && $ARGV[0] =~ /^\d+$/ && $ARGV[2] =~ /^\d+$/ ? "manual" :

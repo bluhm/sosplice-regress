@@ -1,4 +1,4 @@
-#	$OpenBSD$
+#	$OpenBSD: Makefile,v 1.1 2017/10/27 16:59:14 bluhm Exp $
 
 # The following ports must be installed:
 #
@@ -25,8 +25,8 @@ regress:
 
 .if ! empty (PERL_REQUIRE)
 regress:
-        @echo "${PERL_REQUIRE}"
-        @echo install these perl packages for additional tests
+	@echo "${PERL_REQUIRE}"
+	@echo install these perl packages for additional tests
 .endif
 
 # This test needs a manual setup of two machines
