@@ -80,7 +80,7 @@ addr.py: Makefile
 	echo 'FAKE_NET = "${FAKE_NET}"' >>$@.tmp
 	mv $@.tmp $@
 
-SCAPYS !=		cd ${.CURDIR} && ls *.py
+SCAPYS !=		cd ${.CURDIR} && ls scapy-*.py
 TARGETS =		${SCAPYS}
 
 # Set variables so that make runs with and without obj directory.
