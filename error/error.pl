@@ -20,7 +20,7 @@ use warnings;
 use Errno;
 
 sub usage {
-	die "usage: error.pl test-args.pl\n";
+	die "usage: error.pl args-test.pl\n";
 }
 
 @ARGV == 1 or usage();

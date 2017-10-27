@@ -26,7 +26,7 @@ use Server;
 require 'funcs.pl';
 
 sub usage {
-	die "usage: echo.pl copy|splice [test-args.pl]\n";
+	die "usage: echo.pl copy|splice [args-test.pl]\n";
 }
 
 my $test;

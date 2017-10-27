@@ -25,7 +25,7 @@ use Server;
 require 'funcs.pl';
 
 sub usage {
-	die "usage: direct.pl [test-args.pl]\n";
+	die "usage: direct.pl [args-test.pl]\n";
 }
 
 my $testfile;

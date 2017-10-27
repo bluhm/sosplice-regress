@@ -21,7 +21,7 @@ use Cwd;
 use File::Basename;
 
 sub usage {
-	die "usage: remote.pl remotessh test-args.pl\n";
+	die "usage: remote.pl remotessh args-test.pl\n";
 }
 
 @ARGV == 2 or usage();
