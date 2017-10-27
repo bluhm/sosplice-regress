@@ -90,7 +90,7 @@ PYTHON =	PYTHONPATH=${.OBJDIR} python2.7 -u ${.CURDIR}/
 .for s in ${SCAPYS}
 run-regress-$s: $s addr.py
 	@echo '\n======== $@ ========'
-	time ${SUDO} ${PYTHON}$s
+	time ${SUDO} ${PYTHON}$s 54321 12345
 .endfor
 
 CLEANFILES +=		addr.py *.pyc *.log stamp-*

@@ -2,12 +2,14 @@
 # do a tcp handshake for the client and server connection
 
 import os
+import sys
 import threading
 from addr import *
 from scapy.all import *
 
-relay=12345
-server=54321
+client=os.getpid() & 0xffff
+relay=int(sys.argv[2])
+server=int(sys.argv[1])
 
 class Sniff1(threading.Thread):
 	filter = None
@@ -19,12 +21,10 @@ class Sniff1(threading.Thread):
 		if self.captured:
 			self.packet = self.captured[0]
 
-tport=os.getpid() & 0xffff
-
 ip=IP(src=FAKE_NET_ADDR, dst=REMOTE_ADDR)
 
 print "Send SYN packet, receive SYN+ACK"
-syn=TCP(sport=tport, dport=relay, seq=0, flags='S', window=(2**16)-1)
+syn=TCP(sport=client, dport=relay, seq=0, flags='S', window=(2**16)-1)
 synack=sr1(ip/syn, iface=LOCAL_IF, timeout=5)
 
 if synack is None:
