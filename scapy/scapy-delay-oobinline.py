@@ -1,5 +1,5 @@
 #!/usr/local/bin/python2.7
-# send data from client via relay before server handshake is completed
+# send urgent data from client before handshake has completed
 
 import os
 import sys
@@ -50,10 +50,10 @@ if spliced_syn is None:
 	print "ERROR: No spliced SYN packet received"
 	exit(1)
 
-print "Send 10 bytes payload"
-data="0123456789"
-payload=TCP(sport=synack.dport, dport=synack.sport,
-    seq=1, ack=synack.seq+1,  flags='AP')/data
+print "Send 20 bytes payload and one urgent byte"
+data="0123456789Xabcdefghij"
+payload=TCP(sport=synack.dport, dport=synack.sport, urgptr=11,
+    seq=1, ack=synack.seq+1,  flags='APU')/data
 payload_ack=sr1(ip/payload, iface=LOCAL_IF)
 
 if payload_ack is None:
@@ -66,10 +66,10 @@ if payload_ack.ack != len(data)+1:
 
 time.sleep(1)
 
-print "Expect spliced payload"
+print "Expect spliced urgent payload"
 sniffer = Sniff1();
 sniffer.filter = "src %s and dst %s and tcp port %u " \
-    "and tcp[tcpflags] = tcp-ack|tcp-push" % (ip.dst, ip.src, server)
+    "and tcp[tcpflags] = tcp-ack|tcp-urg" % (ip.dst, ip.src, server)
 sniffer.start()
 time.sleep(1)
 
@@ -86,15 +86,15 @@ sniffer.join(timeout=7)
 spliced_payload = sniffer.packet
 
 if spliced_payload is None:
-	print "ERROR: No spliced payload packet received"
+	print "ERROR: No spliced urgent payload packet received"
 	exit(1)
 if spliced_payload.seq != spliced_ack.seq:
 	print "ERROR: Expected seq %d, got %d in spliced payload" % \
 	    (spliced_ack.seq, spliced_payload.seq)
 	exit(1)
-if spliced_payload.len-20-20 != len(data):
-	print "ERROR: Expected len %d, got %d in spliced payload" % \
-	    (len(data), spliced_payload.len-20-20)
+if spliced_payload.urgptr != 11:
+	print "ERROR: Expected urgptr %d, got %d in spliced payload" % \
+	    (11, spliced_payload.urgptr)
 	exit(1)
 
 print "Kill connections with RST"
