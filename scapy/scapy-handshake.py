@@ -59,17 +59,17 @@ if spliced_ack is None:
 	print "ERROR: No spliced ACK packet received"
 	exit(1)
 if spliced_ack.seq != spliced_syn.seq+1:
-        print "ERROR: Expected seq %d, got %d in spliced ack" % \
-            (spliced_syn.seq+1, spliced_ack.seq)
-        exit(1)
+	print "ERROR: Expected seq %d, got %d in spliced ack" % \
+	    (spliced_syn.seq+1, spliced_ack.seq)
+	exit(1)
 if spliced_ack.ack != 1:
-        print "ERROR: Expected ack %d, got %d in spliced ack" % \
-            (1, spliced_ack.ack)
-        exit(1)
+	print "ERROR: Expected ack %d, got %d in spliced ack" % \
+	    (1, spliced_ack.ack)
+	exit(1)
 if spliced_ack.len-20-20 != 0:
-        print "ERROR: Expected len %d, got %d in spliced ack" % \
-            (0, spliced_ack.len-20-20)
-        exit(1)
+	print "ERROR: Expected len %d, got %d in spliced ack" % \
+	    (0, spliced_ack.len-20-20)
+	exit(1)
 
 time.sleep(1)
 
