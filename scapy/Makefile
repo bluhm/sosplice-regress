@@ -93,10 +93,7 @@ addr.py: Makefile
 	mv $@.tmp $@
 
 # load the pf rules into the kernel of the REMOTE and LOCAL machine
-stamp-pfctl: addr.py pf.conf
-	cat addr.py ${.CURDIR}/pf.conf | pfctl -n -f -
-	cat addr.py ${.CURDIR}/pf.conf | \
-	    ssh ${REMOTE_SSH} ${SUDO} pfctl -a regress -f -
+stamp-pfctl:
 .if ! empty(PF_ANCHOR)
 	echo 'pass on ${LOCAL_IF} no state' | ${SUDO} pfctl -a regress -f -
 .endif
