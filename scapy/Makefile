@@ -116,10 +116,18 @@ SCAPYPATH =	${.CURDIR}/
 .endif
 
 .for s in ${SCAPYS}
-run-regress-$s: $s addr.py
+run-regress-$s: $s addr.py stamp-pfctl
 	@echo '\n======== $@ ========'
 	time SUDO=${SUDO} PYTHON="${PYTHON}" perl ${PERLINC} ${PERLPATH}scapy.pl splice ${FAKE_NET_ADDR} ${REMOTE_ADDR} ${REMOTE_SSH} ${SCAPYPATH}$s
 .endfor
+
+.if ! empty(PF_ANCHOR)
+TARGETS +=	cleanup
+run-regress-cleanup:
+	@echo '\n======== $@ ========'
+	${SUDO} pfctl -a regress -Fr
+	rm -f stamp-pfctl
+.endif
 
 CLEANFILES +=		addr.py *.pyc *.log stamp-*
 
