@@ -76,7 +76,7 @@ regress:
 .MAIN: all
 
 .if make (regress) || make (all)
-.BEGIN: pf.conf addr.py
+.BEGIN: addr.py
 	@echo
 	${SUDO} true
 	ssh -t ${REMOTE_SSH} true
