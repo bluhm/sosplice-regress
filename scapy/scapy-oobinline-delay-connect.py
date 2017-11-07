@@ -67,7 +67,7 @@ if spliced_syn is None:
 print "Expect spliced urgent payload"
 sniffer = Sniff1();
 sniffer.filter = "src %s and dst %s and tcp port %u " \
-    "and tcp[tcpflags] = tcp-ack|tcp-urg" % (ip.dst, ip.src, server)
+    "and tcp[tcpflags] = tcp-ack|tcp-urg|tcp-push" % (ip.dst, ip.src, server)
 sniffer.start()
 time.sleep(1)
 
@@ -93,6 +93,10 @@ if spliced_payload.seq != spliced_ack.seq:
 if spliced_payload.urgptr != 11:
 	print "ERROR: Expected urgptr %d, got %d in spliced payload" % \
 	    (11, spliced_payload.urgptr)
+	exit(1)
+if spliced_payload.len-20-20 != len(data):
+	print "ERROR: Expected len %d, got %d in spliced payload" % \
+	    (len(data), spliced_payload.len-20-20)
 	exit(1)
 
 print "Kill connections with RST"
