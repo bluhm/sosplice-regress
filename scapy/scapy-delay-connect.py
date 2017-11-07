@@ -31,17 +31,17 @@ if synack is None:
 	print "ERROR: No matching SYN+ACK packet received"
 	exit(1)
 
+print "Send ACK packet to finish handshake"
+ack=TCP(sport=synack.dport, dport=synack.sport,
+    seq=1, ack=synack.seq+1,  flags='A')
+send(ip/ack, iface=LOCAL_IF)
+
 print "Expect spliced SYN"
 sniffer = Sniff1();
 sniffer.filter = "src %s and dst %s and tcp port %u " \
     "and tcp[tcpflags] = tcp-syn" % (ip.dst, ip.src, server)
 sniffer.start()
 time.sleep(1)
-
-print "Send ACK packet to finish handshake"
-ack=TCP(sport=synack.dport, dport=synack.sport,
-    seq=1, ack=synack.seq+1,  flags='A')
-send(ip/ack, iface=LOCAL_IF)
 
 print "Send 20 bytes payload and one urgent byte"
 data="0123456789Xabcdefghij"
