@@ -71,6 +71,7 @@ if ($mode eq "relay") {
 	    rcvbuf		=> 2**12,
 	    sndbuf		=> 2**12,
 	    down		=> "Broken pipe|Connection reset by peer",
+	    clientreadable	=> $ARGV[0] =~ /delay-connect/ ? 1 : 0,
 	);
 	open(my $log, '<', $r->{logfile})
 	    or die "Remote log file open failed: $!";
