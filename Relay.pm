@@ -96,6 +96,16 @@ sub child {
 	    or die ref($self), " dup STDIN failed: $!";
 	print STDERR "Accepted\n";
 
+	if ($self->{clientreadable}) {
+		my $idle = 15;  # timeout
+		my $rin = '';
+		vec($rin, fileno($as), 1) = 1;
+		defined(my $n = select($rin, undef, undef, $idle))
+		    or die ref($self), " select failed: $!";
+		$idle && $n == 0
+		    and die ref($self), " select timeout";
+	}
+
 	my $cs = IO::Socket::INET6->new(
 	    Proto	=> $self->{protocol},
 	    Domain	=> $self->{connectdomain},
