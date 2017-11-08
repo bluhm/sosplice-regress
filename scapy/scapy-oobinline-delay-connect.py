@@ -71,6 +71,9 @@ sniffer.filter = "src %s and dst %s and tcp port %u " \
 sniffer.start()
 time.sleep(1)
 
+print "Sleep for splicing syscall, there is no event that can trigger us."
+time.sleep(3)
+
 print "Send spliced SYN+ACK packet to finish handshake"
 spliced_synack=TCP(sport=spliced_syn.dport, dport=spliced_syn.sport,
     seq=0, ack=spliced_syn.seq+1, flags='SA')
