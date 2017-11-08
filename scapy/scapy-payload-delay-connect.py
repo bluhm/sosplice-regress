@@ -2,6 +2,7 @@
 # send payload from client to relay before connecting to server
 
 import os
+import re
 import sys
 import threading
 from addr import *
@@ -71,8 +72,17 @@ sniffer.filter = "src %s and dst %s and tcp port %u " \
 sniffer.start()
 time.sleep(1)
 
-print "Sleep for splicing syscall, there is no event that can trigger us."
-time.sleep(3)
+print "Wait for splicing syscall, grep it in relay log"
+def loggrep(file, regex, timeout):
+	for i in range(timeout):
+		for line in open(file, 'r'):
+			if re.search(regex, line):
+				return line
+		time.sleep(1)
+	return None
+if not loggrep("relay.log", "Spliced", 5):
+	print "ERROR: Relay did not splice"
+	exit(1)
 
 print "Send spliced SYN+ACK packet to finish handshake"
 spliced_synack=TCP(sport=spliced_syn.dport, dport=spliced_syn.sport,
