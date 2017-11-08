@@ -331,6 +331,7 @@ sub relay_splice_stream {
 		my $splicemax = $max ? $max - $len : 0;
 		setsplice(\*STDIN, \*STDOUT, $splicemax, $idle)
 		    or die ref($self), " splice stdin to stdout failed: $!";
+		print STDERR "Spliced\n";
 
 		if ($self->{readblocking}) {
 			my $read;
@@ -378,6 +379,7 @@ sub relay_splice_datagram {
 	my $splicemax = $max || 0;
 	setsplice(\*STDIN, \*STDOUT, $splicemax, $idle)
 	    or die ref($self), " splice stdin to stdout failed: $!";
+	print STDERR "Spliced\n";
 
 	my $rin = '';
 	vec($rin, fileno(STDIN), 1) = 1;
